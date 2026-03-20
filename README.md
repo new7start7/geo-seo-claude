@@ -1,95 +1,90 @@
-<p align="center">
-  <img src="assets/banner.svg" alt="GEO-SEO Codex Toolkit" width="900"/>
-</p>
+# GEO SEO Tool
 
-<p align="center">
-  <strong>GEO-first, SEO-supported github.</strong> Analyze websites for both classic SEO health and AI-search visibility.
-</p>
+A production-ready Python toolkit for auditing a single URL across three layers:
 
----
+- **SEO fundamentals**: titles, descriptions, headings, canonicals, content depth, internal links, alt text, and schema presence.
+- **GEO readiness**: AI crawler access, `llms.txt`, answer-oriented content, entity coverage, citation readiness, and trust signals.
+- **Technical health**: status code, HTTPS, response speed, indexability, viewport setup, sitemap discovery, and security headers.
 
-## Quick Start
+The project is intentionally lightweight: `analyzer.py` contains the core audit engine, and `run.py` provides a clean CLI for local use, automation, or wrapper agents.
 
-### Install dependencies
+## Features
+
+- Self-contained analyzer with no dependency on older Codex branch state.
+- Structured JSON output for automation.
+- Rich terminal output for interactive use.
+- Practical GEO checks focused on discoverability and AI citation readiness.
+- Simple repository layout and reduced skill surface for agent workflows.
+
+## Installation
 
 ```bash
-python -m pip install -r requirements.txt
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-### Run the analyzer
+## Usage
+
+### Rich terminal report
 
 ```bash
 python run.py https://example.com
 ```
 
-## Codex Compatibility
+### Compact text mode
 
-This repository is now structured for Codex:
+```bash
+python run.py https://example.com --compact
+```
 
-- Root instructions live in `AGENTS.md`.
-- Skill files live in `.codex/skills/`.
-- Skill routing is based on natural-language requests instead of slash commands.
-- The runnable CLI entrypoint is `run.py`.
-- Core analysis logic lives in `analyzer.py`.
+### JSON output for scripts
 
-## Natural-Language Triggers
+```bash
+python run.py https://example.com --format json
+```
 
-Use this project when a user asks for things like:
+## Output model
 
-- “Audit this site for SEO and GEO.”
-- “Check AI crawler access for this domain.”
-- “Review schema, FAQ coverage, and entity signals.”
-- “Generate a GEO report for this URL.”
-- “Analyze AI visibility for this page.”
+The analyzer returns:
 
-## Project Layout
+- `overall_score`
+- `category_scores` for `seo`, `geo`, and `technical`
+- full page snapshot data
+- grouped checks with score, status, summary, and recommendation
+- prioritized action items
+- crawl/runtime notes
+
+## Repository structure
 
 ```text
-geo-seo-claude/
-├── .codex/skills/        # Codex-compatible skill definitions
-├── AGENTS.md             # Root Codex instructions
-├── analyzer.py           # Modular SEO/GEO analyzer
+.
+├── .codex/skills/        # Minimal Codex skill guidance
+├── AGENTS.md             # Root agent instructions
+├── analyzer.py           # Production audit engine
 ├── run.py                # CLI entrypoint
-├── scripts/              # Reusable fetch/citability/llms helpers
-├── schema/               # JSON-LD templates
-├── agents/               # Specialized analysis guidance docs
+├── scripts/              # Optional helper utilities retained from the repo
+├── README.md             # Project documentation
 └── requirements.txt      # Python dependencies
 ```
 
-## What the Analyzer Checks
+## Design principles
 
-### Basic SEO
-- Title tag quality
-- Meta description presence
-- H1 usage
-- Canonical detection
-- Content depth
-- Image alt coverage
-- HTTP status and HTTPS
-- Server-rendered content availability
+- **Clean architecture**: fetch, parse, score, and render responsibilities are clearly separated.
+- **Structured first**: checks produce machine-readable data before terminal formatting.
+- **Production-ready defaults**: conservative timeouts, stable request headers, and actionable scoring.
+- **Minimal agent surface**: only keep the skills needed to route GEO work effectively.
 
-### GEO Optimization
-- FAQ coverage
-- Structured data coverage
-- Entity-like mentions in visible content
-- `llms.txt` presence
-- AI crawler accessibility in `robots.txt`
-- Page citability signals
+## Suggested workflow
 
-## Example
+1. Run `python run.py <url>`.
+2. Review priority failures first.
+3. Use `--format json` to store or transform the report.
+4. Extend `GeoSeoAnalyzer` if you need custom domain-specific checks.
 
-```bash
-python run.py http://127.0.0.1:8000/
-```
+## Roadmap ideas
 
-Example output includes:
-- Overall score
-- Separate SEO and GEO scores
-- Tabular check results
-- Priority issues list
-- JSON summary for automation
-
-## Notes
-
-- External network access may be limited in some environments; when that happens, test against a local URL.
-- Existing helper scripts in `scripts/` are still available for deeper GEO workflows.
+- Site-wide crawling mode.
+- SERP-aware keyword mapping.
+- Historical snapshots and delta reports.
+- Exporters for PDF and CSV deliverables.
