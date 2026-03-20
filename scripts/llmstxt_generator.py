@@ -21,6 +21,9 @@ except ImportError:
     print("ERROR: Required packages not installed. Run: pip install -r requirements.txt")
     sys.exit(1)
 
+SESSION = requests.Session()
+SESSION.trust_env = False
+
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -55,7 +58,7 @@ def validate_llmstxt(url: str) -> dict:
 
     # Check llms.txt
     try:
-        response = requests.get(llms_url, headers=DEFAULT_HEADERS, timeout=15)
+        response = SESSION.get(llms_url, headers=DEFAULT_HEADERS, timeout=15)
         if response.status_code == 200:
             result["exists"] = True
             result["content"] = response.text
@@ -118,7 +121,7 @@ def validate_llmstxt(url: str) -> dict:
 
     # Check llms-full.txt
     try:
-        response = requests.get(llms_full_url, headers=DEFAULT_HEADERS, timeout=15)
+        response = SESSION.get(llms_full_url, headers=DEFAULT_HEADERS, timeout=15)
         if response.status_code == 200:
             result["full_version"]["exists"] = True
     except Exception:
@@ -141,7 +144,7 @@ def generate_llmstxt(url: str, max_pages: int = 30) -> dict:
 
     # Fetch homepage
     try:
-        response = requests.get(url, headers=DEFAULT_HEADERS, timeout=30)
+        response = SESSION.get(url, headers=DEFAULT_HEADERS, timeout=30)
         soup = BeautifulSoup(response.text, "lxml")
     except Exception as e:
         result["error"] = f"Failed to fetch homepage: {str(e)}"
