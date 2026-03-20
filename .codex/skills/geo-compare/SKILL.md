@@ -4,7 +4,7 @@ description: >
   Monthly delta tracking and progress reporting for GEO clients. Compares two
   GEO audits (baseline vs. current), calculates score improvements across all
   categories, tracks action item completion, and generates a "here's your progress"
-  client report. Use when user says "compare", "delta", "monthly report", "progress",
+  client report. Use when the user asks in natural language for "compare", "delta", "monthly report", "progress",
   "confronta", "progressi", "report mensile", or when running a monthly client check-in.
 version: 1.0.0
 tags: [geo, business, delta, monthly, reporting, client, progress]
@@ -24,15 +24,15 @@ score is proof of value. This skill generates the "here's your progress" report.
 ## Commands
 
 ```
-/geo compare <domain>
-/geo compare <baseline-file> <current-file>
-/geo compare electron-srl.com --month march-2026
+monthly comparison reporting for <domain>
+comparison workflow for <baseline-file> <current-file>
+comparison workflow for electron-srl.com --month march-2026
 ```
 
 **Examples:**
 ```
-/geo compare electron-srl.com
-/geo compare ~/.geo-prospects/audits/electron-srl.com-2026-01-15.md ~/.geo-prospects/audits/electron-srl.com-2026-03-12.md
+comparison workflow for electron-srl.com
+comparison workflow for ~/.geo-prospects/audits/electron-srl.com-2026-01-15.md ~/.geo-prospects/audits/electron-srl.com-2026-03-12.md
 ```
 
 ---
@@ -46,7 +46,7 @@ If only domain is provided:
 2. Sort by date
 3. Use oldest as baseline, newest as current
 4. If only one file exists: use it as baseline, run a fresh quick audit as current
-5. If no files exist: suggest running `/geo prospect audit <domain>` first
+5. If no files exist: suggest running `prospect workflow for audit <domain>` first
 
 ### Step 2: Parse Both Audits
 
@@ -304,4 +304,4 @@ fresh audit that weren't visible before. Frame declines as "newly discovered opp
    New issues found: 2 (minor)
    On track for Month 6 target: YES (65/100)
    ```
-3. Suggest next action: "Share with client or run `/geo report-pdf` for a visual version"
+3. Suggest next action: "Share with client or run `PDF GEO report` for a visual version"
