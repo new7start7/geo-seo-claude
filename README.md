@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <strong>GEO-first, SEO-supported.</strong> Analyze websites for both classic SEO health and AI-search visibility.
+  <strong>GEO-first, SEO-supported github.</strong> Analyze websites for both classic SEO health and AI-search visibility.
 </p>
 
 ---
