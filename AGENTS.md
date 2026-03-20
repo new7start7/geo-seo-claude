@@ -1,32 +1,38 @@
-# GEO SEO Codex Agent Guide
+# GEO SEO Tool Agent Guide
 
 ## Scope
 These instructions apply to the entire repository.
 
 ## Purpose
-This project is a Codex-compatible GEO and SEO analysis toolkit. Use it when the user wants to audit a website for traditional SEO health and AI-search visibility.
+This repository is a focused GEO + SEO auditing tool for single-URL analysis. Use it when the user wants a practical audit of search visibility, AI discoverability, or citation readiness.
 
-## Natural language triggers
-Do not rely on slash commands. Use the repository when the user asks for things like:
-- audit this site for SEO or GEO
-- analyze AI visibility for a URL
-- check schema, FAQ coverage, entities, or llms.txt
-- review technical SEO issues, crawlability, or AI crawler access
-- generate a GEO report or a quick visibility snapshot
+## Primary workflow
+1. Run `python run.py <url>` for a human-readable report.
+2. Run `python run.py <url> --format json` for automation-friendly output.
+3. Reuse `analyzer.py` if the user needs scripted analysis or new checks.
 
-## Expected workflow
-1. Run `python run.py <url>` for a complete single-URL analysis.
-2. Reuse the modular analyzer in `analyzer.py` for automation or deeper scripting.
-3. Reuse the skill files in `.codex/skills/` as guidance for specialized GEO tasks.
+## Repository conventions
+- Keep runtime logic in Python, not Markdown.
+- Prefer self-contained modules over hidden cross-branch dependencies.
+- Return structured data from the analyzer before formatting output.
+- If you modify a file, rewrite the full file cleanly rather than applying partial edits.
+- Keep the skill tree intentionally small and easy to route.
 
-## Project conventions
-- Keep runtime logic in Python modules, not in markdown skills.
-- Prefer natural-language intent routing over command parsers.
-- Keep analysis code modular and side-effect free where practical.
-- When you add new checks, return structured data first and format output separately.
+## Key files
+- `analyzer.py`: production GEO + SEO audit engine.
+- `run.py`: CLI interface.
+- `README.md`: setup and usage documentation.
+- `.codex/skills/`: minimal routing guidance for agent use.
 
-## Key entrypoints
-- `run.py`: CLI entrypoint.
-- `analyzer.py`: core analyzer orchestration and scoring.
-- `scripts/`: reusable helpers for fetching, citability scoring, and llms.txt analysis.
-- `.codex/skills/`: Codex skill content and guidance.
+## Natural-language triggers
+Use this project when the request sounds like:
+- audit this URL for SEO
+- check GEO or AI visibility
+- analyze AI crawler access
+- review schema, entities, or llms.txt
+- generate a GEO-ready technical snapshot
+
+## Expected output quality
+- Actionable recommendations, not generic advice.
+- Clear separation between SEO, GEO, and technical findings.
+- JSON-friendly results when automation is requested.

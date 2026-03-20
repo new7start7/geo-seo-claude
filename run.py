@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""CLI entrypoint for the GEO/SEO analyzer."""
+"""Command-line interface for the GEO SEO analyzer."""
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from typing import Any
+from urllib.parse import urlparse
 
-import validators
 from rich.console import Console
+from rich.panel import Panel
 from rich.table import Table
 
 from analyzer import analyze_url
@@ -16,59 +18,103 @@ from analyzer import analyze_url
 console = Console()
 
 
+def valid_url(value: str) -> str:
+    parsed = urlparse(value if "://" in value else f"https://{value}")
+    if not parsed.scheme or not parsed.netloc:
+        raise argparse.ArgumentTypeError(f"Invalid URL: {value}")
+    return value
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="run.py",
+        description="Run a production-ready GEO + SEO analysis for a single URL.",
+    )
+    parser.add_argument("url", type=valid_url, help="Target page URL.")
+    parser.add_argument(
+        "--format",
+        choices=["text", "json"],
+        default="text",
+        help="Render a rich terminal report or raw JSON.",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=20,
+        help="HTTP timeout in seconds for page and discovery requests.",
+    )
+    parser.add_argument(
+        "--compact",
+        action="store_true",
+        help="Show only summary panels and top priorities in text mode.",
+    )
+    return parser
+
+
 def render_checks(title: str, checks: list[dict[str, Any]]) -> None:
-    table = Table(title=title)
+    table = Table(title=title, show_lines=False)
     table.add_column("Check")
     table.add_column("Status")
     table.add_column("Score", justify="right")
-    table.add_column("Details")
+    table.add_column("Summary")
     for check in checks:
-        emoji = "✅" if check["status"] == "pass" else "⚠️"
-        table.add_row(check["name"], emoji, str(check["score"]), check["details"])
+        icon = {"pass": "✅", "warn": "⚠️", "fail": "❌"}.get(check["status"], "•")
+        table.add_row(check["name"], icon, f"{check['score']}/{check['max_score']}", check["summary"])
     console.print(table)
 
 
-def main(argv: list[str]) -> int:
-    if len(argv) != 2:
-        console.print("Usage: python run.py <url>", style="bold red")
-        return 1
+def render_text_report(result: dict[str, Any], compact: bool) -> None:
+    scores = result["category_scores"]
+    page = result["page"]
+    header = (
+        f"[bold]{result['final_url']}[/bold]\n"
+        f"Overall: [cyan]{result['overall_score']}[/cyan]  "
+        f"SEO: [green]{scores['seo']}[/green]  "
+        f"GEO: [magenta]{scores['geo']}[/magenta]  "
+        f"Technical: [yellow]{scores['technical']}[/yellow]"
+    )
+    console.print(Panel(header, title="GEO SEO Audit", expand=False))
 
-    url = argv[1]
-    if not validators.url(url):
-        console.print(f"Invalid URL: {url}", style="bold red")
-        return 1
-
-    result = analyze_url(url)
-
-    console.print(f"\n[bold cyan]GEO/SEO Analysis for[/bold cyan] {result['url']}")
-    console.print(f"Overall Score: [bold]{result['overall_score']}[/bold] | SEO: {result['seo_score']} | GEO: {result['geo_score']}")
-    console.print(f"Title: {result['page'].get('title') or 'N/A'}")
-    console.print(f"Detected entities: {', '.join(result['entities'][:8]) or 'None'}")
-    console.print(f"Citability score: {result['citability'].get('page_score', 'N/A')}")
+    snapshot = Table(title="Snapshot")
+    snapshot.add_column("Metric")
+    snapshot.add_column("Value")
+    snapshot.add_row("Title", page.get("title") or "—")
+    snapshot.add_row("Words", str(page.get("word_count", 0)))
+    snapshot.add_row("H1 count", str(len(page.get("h1_tags", []))))
+    snapshot.add_row("Structured data blocks", str(len(page.get("structured_data", []))))
+    snapshot.add_row("Internal links", str(len(page.get("internal_links", []))))
+    snapshot.add_row("Entity candidates", ", ".join(result.get("entities", [])[:6]) or "—")
+    console.print(snapshot)
 
     if result.get("errors"):
-        console.print("[bold yellow]Fetch/runtime notes[/bold yellow]")
-        for error in result["errors"][:6]:
-            console.print(f"- {error}")
+        console.print("[bold yellow]Notes[/bold yellow]")
+        for item in result["errors"]:
+            console.print(f"- {item}")
 
-    render_checks("SEO Checks", result["seo_checks"])
-    render_checks("GEO Checks", result["geo_checks"])
+    console.print("[bold]Top priorities[/bold]")
+    for item in result.get("priorities", [])[:5]:
+        console.print(f"- [{item['category']}] {item['name']}: {item['recommendation']}")
 
-    if result["priority_issues"]:
-        console.print("[bold yellow]Priority issues[/bold yellow]")
-        for issue in result["priority_issues"]:
-            console.print(f"- {issue}")
+    if compact:
+        return
 
-    console.print("\n[bold green]JSON summary[/bold green]")
-    console.print_json(json.dumps({
-        "url": result["url"],
-        "overall_score": result["overall_score"],
-        "seo_score": result["seo_score"],
-        "geo_score": result["geo_score"],
-        "priority_issues": result["priority_issues"][:5],
-    }))
-    return 0
+    render_checks("SEO checks", result["checks"]["seo"])
+    render_checks("GEO checks", result["checks"]["geo"])
+    render_checks("Technical checks", result["checks"]["technical"])
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    result = analyze_url(args.url, timeout=args.timeout)
+
+    if args.format == "json":
+        console.print_json(json.dumps(result))
+    else:
+        render_text_report(result, compact=args.compact)
+    return 0 if not result.get("errors") or result["page"].get("status_code") else 1
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main())
