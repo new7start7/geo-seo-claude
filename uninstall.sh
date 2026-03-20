@@ -2,12 +2,11 @@
 set -euo pipefail
 
 # ============================================================
-# GEO-SEO Claude Code Skill Uninstaller
+# GEO-SEO Codex Skill Uninstaller
 # ============================================================
 
-CLAUDE_DIR="${HOME}/.claude"
-SKILLS_DIR="${CLAUDE_DIR}/skills"
-AGENTS_DIR="${CLAUDE_DIR}/agents"
+CODEX_DIR="${HOME}/.codex"
+SKILLS_DIR="${CODEX_DIR}/skills"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -16,7 +15,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo ""
-echo -e "${YELLOW}GEO-SEO Claude Code Skill Uninstaller${NC}"
+echo -e "${YELLOW}GEO-SEO Codex Skill Uninstaller${NC}"
 echo ""
 echo "This will remove the following:"
 echo ""
@@ -25,9 +24,6 @@ echo ""
 [ -d "$SKILLS_DIR/geo" ] && echo "  → ${SKILLS_DIR}/geo/"
 for skill_dir in "$SKILLS_DIR"/geo-*/; do
     [ -d "$skill_dir" ] && echo "  → ${skill_dir}"
-done
-for agent_file in "$AGENTS_DIR"/geo-*.md; do
-    [ -f "$agent_file" ] && echo "  → ${agent_file}"
 done
 
 echo ""
@@ -53,15 +49,6 @@ for skill_dir in "$SKILLS_DIR"/geo-*/; do
         skill_name=$(basename "$skill_dir")
         rm -rf "$skill_dir"
         echo -e "${GREEN}✓ Removed ${skill_name}${NC}"
-    fi
-done
-
-# Remove agents
-for agent_file in "$AGENTS_DIR"/geo-*.md; do
-    if [ -f "$agent_file" ]; then
-        agent_name=$(basename "$agent_file")
-        rm -f "$agent_file"
-        echo -e "${GREEN}✓ Removed ${agent_name}${NC}"
     fi
 done
 

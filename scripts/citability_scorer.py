@@ -22,6 +22,9 @@ except ImportError:
     print("ERROR: Required packages not installed. Run: pip install -r requirements.txt")
     sys.exit(1)
 
+SESSION = requests.Session()
+SESSION.trust_env = False
+
 
 def score_passage(text: str, heading: Optional[str] = None) -> dict:
     """Score a single passage for AI citability (0-100)."""
@@ -247,7 +250,7 @@ def score_passage(text: str, heading: Optional[str] = None) -> dict:
 def analyze_page_citability(url: str) -> dict:
     """Analyze all content blocks on a page for citability."""
     try:
-        response = requests.get(
+        response = SESSION.get(
             url,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
