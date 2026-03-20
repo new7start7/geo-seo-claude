@@ -6,13 +6,13 @@ description: >
   traditional SEO foundations. Performs full GEO audits, citability scoring,
   AI crawler analysis, llms.txt generation, brand mention scanning, platform-specific
   optimization, schema markup, technical SEO, content quality (E-E-A-T), and
-  client-ready GEO report generation. Use when user says "geo", "seo", "audit",
+  client-ready GEO report generation. Use when the user asks in natural language for "geo", "seo", "audit",
   "AI search", "AI visibility", "optimize", "citability", "llms.txt", "schema",
   "brand mentions", "GEO report", or any URL for analysis.
 allowed-tools: Read, Grep, Glob, Bash, WebFetch, Write
 ---
 
-# GEO-SEO Analysis Tool — Claude Code Skill (February 2026)
+# GEO-SEO Analysis Tool — Codex Skill (February 2026)
 
 > **Philosophy:** GEO-first, SEO-supported. AI search is eating traditional search.
 > This tool optimizes for where traffic is going, not where it was.
@@ -21,24 +21,24 @@ allowed-tools: Read, Grep, Glob, Bash, WebFetch, Write
 
 ## Quick Reference
 
-| Command | What It Does |
+| Natural-language request | What it does |
 |---------|-------------|
-| `/geo audit <url>` | Full GEO + SEO audit with parallel subagents |
-| `/geo page <url>` | Deep single-page GEO analysis |
-| `/geo citability <url>` | Score content for AI citation readiness |
-| `/geo crawlers <url>` | Check AI crawler access (robots.txt analysis) |
-| `/geo llmstxt <url>` | Analyze or generate llms.txt file |
-| `/geo brands <url>` | Scan brand mentions across AI-cited platforms |
-| `/geo platforms <url>` | Platform-specific optimization (ChatGPT, Perplexity, Google AIO) |
-| `/geo schema <url>` | Detect, validate, and generate structured data |
-| `/geo technical <url>` | Traditional technical SEO audit |
-| `/geo content <url>` | Content quality and E-E-A-T assessment |
-| `/geo report <url>` | Generate client-ready GEO deliverable |
-| `/geo report-pdf <url>` | Generate professional PDF report with charts and scores |
-| `/geo quick <url>` | 60-second GEO visibility snapshot |
-| `/geo prospect <cmd>` | CRM-lite: manage prospects through the sales pipeline |
-| `/geo proposal <domain>` | Auto-generate client proposal from audit data |
-| `/geo compare <domain>` | Monthly delta report: show score improvements to client |
+| `a full GEO + SEO audit for <url>` | Full GEO + SEO audit with parallel subagents |
+| `a deep single-page GEO analysis for <url>` | Deep single-page GEO analysis |
+| `citability analysis for <url>` | Score content for AI citation readiness |
+| `AI crawler access analysis for <url>` | Check AI crawler access (robots.txt analysis) |
+| `llms.txt analysis or generation for <url>` | Analyze or generate llms.txt file |
+| `brand mention scanning for <url>` | Scan brand mentions across AI-cited platforms |
+| `platform-specific optimization for <url>` | Platform-specific optimization (ChatGPT, Perplexity, Google AIO) |
+| `schema analysis for <url>` | Detect, validate, and generate structured data |
+| `technical SEO analysis for <url>` | Traditional technical SEO audit |
+| `content quality analysis for <url>` | Content quality and E-E-A-T assessment |
+| `client-ready GEO reporting for <url>` | Generate client-ready GEO deliverable |
+| `PDF GEO reporting for <url>` | Generate professional PDF report with charts and scores |
+| `a quick GEO visibility snapshot for <url>` | 60-second GEO visibility snapshot |
+| `prospect pipeline management` | CRM-lite: manage prospects through the sales pipeline |
+| `proposal generation for <domain>` | Auto-generate client proposal from audit data |
+| `monthly comparison reporting for <domain>` | Monthly delta report: show score improvements to client |
 
 ---
 
@@ -61,7 +61,7 @@ allowed-tools: Read, Grep, Glob, Bash, WebFetch, Write
 
 ## Orchestration Logic
 
-### Full Audit (`/geo audit <url>`)
+### Full Audit (`a full GEO + SEO audit for <url>`)
 
 **Phase 1: Discovery (Sequential)**
 1. Fetch homepage HTML (curl or WebFetch)
@@ -149,37 +149,37 @@ Adjust recommendations based on detected type. Local businesses need LocalBusine
 
 ## Output Files
 
-All commands generate structured output:
+Common requests generate structured output:
 
-| Command | Output File |
+| Request type | Output file |
 |---------|------------|
-| `/geo audit` | `GEO-AUDIT-REPORT.md` |
-| `/geo page` | `GEO-PAGE-ANALYSIS.md` |
-| `/geo citability` | `GEO-CITABILITY-SCORE.md` |
-| `/geo crawlers` | `GEO-CRAWLER-ACCESS.md` |
-| `/geo llmstxt` | `llms.txt` (ready to deploy) |
-| `/geo brands` | `GEO-BRAND-MENTIONS.md` |
-| `/geo platforms` | `GEO-PLATFORM-OPTIMIZATION.md` |
-| `/geo schema` | `GEO-SCHEMA-REPORT.md` + generated JSON-LD |
-| `/geo technical` | `GEO-TECHNICAL-AUDIT.md` |
-| `/geo content` | `GEO-CONTENT-ANALYSIS.md` |
-| `/geo report` | `GEO-CLIENT-REPORT.md` (presentation-ready) |
-| `/geo report-pdf` | `GEO-REPORT.pdf` (professional PDF with charts) |
-| `/geo quick` | Inline summary (no file) |
-| `/geo prospect` | Updates `~/.geo-prospects/prospects.json` |
-| `/geo proposal` | `~/.geo-prospects/proposals/<domain>-proposal-<date>.md` |
-| `/geo compare` | `~/.geo-prospects/reports/<domain>-monthly-<YYYY-MM>.md` |
+| Full audit | `GEO-AUDIT-REPORT.md` |
+| Single-page analysis | `GEO-PAGE-ANALYSIS.md` |
+| Citability analysis | `GEO-CITABILITY-SCORE.md` |
+| AI crawler audit | `GEO-CRAWLER-ACCESS.md` |
+| llms.txt generation | `llms.txt` (ready to deploy) |
+| Brand mentions scan | `GEO-BRAND-MENTIONS.md` |
+| Platform optimization | `GEO-PLATFORM-OPTIMIZATION.md` |
+| Schema report | `GEO-SCHEMA-REPORT.md` + generated JSON-LD |
+| Technical audit | `GEO-TECHNICAL-AUDIT.md` |
+| Content analysis | `GEO-CONTENT-ANALYSIS.md` |
+| Client-ready report | `GEO-CLIENT-REPORT.md` (presentation-ready) |
+| PDF report | `GEO-REPORT.pdf` (professional PDF with charts) |
+| Quick snapshot | Inline summary (no file) |
+| Prospect tracking | Updates `~/.geo-prospects/prospects.json` |
+| Proposal generation | `~/.geo-prospects/proposals/<domain>-proposal-<date>.md` |
+| Delta reporting | `~/.geo-prospects/reports/<domain>-monthly-<YYYY-MM>.md` |
 
 ---
 
 ## PDF Report Generation
 
-The `/geo report-pdf <url>` command generates a professional, branded PDF report:
+The `PDF GEO reporting for <url>` command generates a professional, branded PDF report:
 
 ### How It Works
 1. Run the full audit or individual analyses first
 2. Collect all scores and findings into a JSON structure
-3. Execute the PDF generator: `python3 ~/.claude/skills/geo/scripts/generate_pdf_report.py data.json GEO-REPORT.pdf`
+3. Execute the PDF generator: `python3 ~/.codex/skills/geo/scripts/generate_pdf_report.py data.json GEO-REPORT.pdf`
 
 ### What the PDF Includes
 - **Cover page** with GEO score gauge visualization
@@ -191,8 +191,8 @@ The `/geo report-pdf <url>` command generates a professional, branded PDF report
 - **Methodology & Glossary** appendix
 
 ### Workflow
-1. First run `/geo audit <url>` to collect all data
-2. Then run `/geo report-pdf <url>` to generate the PDF
+1. First run `a full GEO + SEO audit for <url>` to collect all data
+2. Then run `PDF GEO reporting for <url>` to generate the PDF
 3. The tool will compile audit data into JSON, then generate the PDF
 4. Output: `GEO-REPORT.pdf` in the current directory
 
@@ -212,20 +212,20 @@ The `/geo report-pdf <url>` command generates a professional, branded PDF report
 
 ```
 # Full GEO audit of a website
-/geo audit https://example.com
+audit https://example.com
 
 # Check if AI bots can see your site
-/geo crawlers https://example.com
+AI crawler review for https://example.com
 
 # Score a specific page for AI citability
-/geo citability https://example.com/blog/best-article
+citability review for https://example.com/blog/best-article
 
 # Generate an llms.txt file for your site
-/geo llmstxt https://example.com
+llms.txt review for https://example.com
 
 # Get a 60-second visibility snapshot
-/geo quick https://example.com
+quick GEO review for https://example.com
 
 # Generate a client-ready report
-/geo report https://example.com
+client GEO report for https://example.com
 ```

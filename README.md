@@ -1,223 +1,118 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="GEO-SEO Claude Code Skill" width="900"/>
+  <img src="assets/banner.svg" alt="GEO-SEO Codex Toolkit" width="900"/>
 </p>
 
 <p align="center">
-  <strong>GEO-first, SEO-supported.</strong> Optimize websites for AI-powered search engines<br/>
-  (ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews) while maintaining traditional SEO foundations.
-</p>
-
-<p align="center">
-  AI search is eating traditional search. This tool optimizes for where traffic is going, not where it was.
+  <strong>Production-ready GEO + SEO analysis for Codex.</strong><br/>
+  Audit websites for traditional search health, AI visibility, schema coverage, crawler access, and answer-engine readiness.
 </p>
 
 ---
 
-## Why GEO Matters (2026)
+## What this repository is
 
-| Metric | Value |
-|--------|-------|
-| GEO services market | $850M+ (projected $7.3B by 2031) |
-| AI-referred traffic growth | +527% year-over-year |
-| AI traffic conversion rate vs organic | 4.4x higher |
-| Gartner: search traffic drop by 2028 | -50% |
-| Brand mentions vs backlinks for AI | 3x stronger correlation |
-| Marketers investing in GEO | Only 23% |
+This repository is a Codex-compatible GEO / SEO toolkit with:
 
----
+- a root `AGENTS.md` for natural-language routing and project conventions
+- skill definitions in `.codex/skills/`
+- a runnable CLI entrypoint: `python run.py <url>`
+- a production-oriented `analyzer.py` that performs live scraping, extraction, scoring, and reporting
+- installer scripts that place the toolkit under `~/.codex/skills/geo/`
 
 ## Quick Start
 
-### One-Command Install (macOS/Linux)
+### 1. Install dependencies
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zubair-trabzada/geo-seo-claude/main/install.sh | bash
+python -m pip install -r requirements.txt
 ```
 
-### Manual Install
+### 2. Run a URL audit
 
 ```bash
-git clone https://github.com/zubair-trabzada/geo-seo-claude.git
-cd geo-seo-claude
-./install.sh
+python run.py https://example.com
 ```
 
-### Requirements
+## Production checks included
 
-- Python 3.8+
-- Claude Code CLI
-- Git
-- Optional: Playwright (for screenshots)
+### Technical SEO
+- HTTP status and redirect handling
+- HTTPS and security-header coverage
+- sitemap presence
+- AI crawler accessibility via `robots.txt`
+- server-rendered content heuristics
 
----
+### On-page SEO
+- title tag quality
+- meta description quality
+- H1 usage
+- canonical strategy
+- heading hierarchy
+- internal linking
+- image alt coverage
+- Open Graph and Twitter metadata
 
-## Commands
+### Content quality
+- main-content extraction with `trafilatura` fallback
+- word count, paragraph depth, and structure
+- freshness/date detection
+- readability heuristics
+- citability scoring integration
 
-Open Claude Code and use these commands:
+### GEO / AI visibility
+- JSON-LD, microdata, and RDFa detection
+- priority schema coverage
+- FAQ signal detection
+- entity extraction via spaCy with fallback behavior
+- `sameAs` entity-graph signal detection
+- `llms.txt` validation
+- business-type classification
 
-| Command | What It Does |
-|---------|-------------|
-| `/geo audit <url>` | Full GEO + SEO audit with parallel subagents |
-| `/geo quick <url>` | 60-second GEO visibility snapshot |
-| `/geo citability <url>` | Score content for AI citation readiness |
-| `/geo crawlers <url>` | Check AI crawler access (robots.txt) |
-| `/geo llmstxt <url>` | Analyze or generate llms.txt |
-| `/geo brands <url>` | Scan brand mentions across AI-cited platforms |
-| `/geo platforms <url>` | Platform-specific optimization |
-| `/geo schema <url>` | Structured data analysis & generation |
-| `/geo technical <url>` | Technical SEO audit |
-| `/geo content <url>` | Content quality & E-E-A-T assessment |
-| `/geo report <url>` | Generate client-ready GEO report |
-| `/geo report-pdf` | Generate professional PDF report with charts & visualizations |
+## Codex usage
 
----
+Use this toolkit when the user asks for things like:
 
-## Architecture
+- “Audit this site for SEO and GEO.”
+- “Check AI crawler access for this domain.”
+- “Review schema, FAQ coverage, and entity signals.”
+- “Generate a GEO report for this URL.”
+- “Analyze AI visibility for this page.”
 
-```
+## Project layout
+
+```text
 geo-seo-claude/
-├── geo/                          # Main skill orchestrator
-│   └── SKILL.md                  # Primary skill file with commands & routing
-├── skills/                       # 11 specialized sub-skills
-│   ├── geo-audit/                # Full audit orchestration & scoring
-│   ├── geo-citability/           # AI citation readiness scoring
-│   ├── geo-crawlers/             # AI crawler access analysis
-│   ├── geo-llmstxt/              # llms.txt standard analysis & generation
-│   ├── geo-brand-mentions/       # Brand presence on AI-cited platforms
-│   ├── geo-platform-optimizer/   # Platform-specific AI search optimization
-│   ├── geo-schema/               # Structured data for AI discoverability
-│   ├── geo-technical/            # Technical SEO foundations
-│   ├── geo-content/              # Content quality & E-E-A-T
-│   ├── geo-report/               # Client-ready markdown report generation
-│   └── geo-report-pdf/           # Professional PDF report with charts
-├── agents/                       # 5 parallel subagents
-│   ├── geo-ai-visibility.md      # GEO audit, citability, crawlers, brands
-│   ├── geo-platform-analysis.md  # Platform-specific optimization
-│   ├── geo-technical.md          # Technical SEO analysis
-│   ├── geo-content.md            # Content & E-E-A-T analysis
-│   └── geo-schema.md             # Schema markup analysis
-├── scripts/                      # Python utilities
-│   ├── fetch_page.py             # Page fetching & parsing
-│   ├── citability_scorer.py      # AI citability scoring engine
-│   ├── brand_scanner.py          # Brand mention detection
-│   ├── llmstxt_generator.py      # llms.txt validation & generation
-│   └── generate_pdf_report.py    # PDF report generator (ReportLab)
-├── schema/                       # JSON-LD templates
-│   ├── organization.json         # Organization schema (with sameAs)
-│   ├── local-business.json       # LocalBusiness schema
-│   ├── article-author.json       # Article + Person schema (E-E-A-T)
-│   ├── software-saas.json        # SoftwareApplication schema
-│   ├── product-ecommerce.json    # Product schema with offers
-│   └── website-searchaction.json # WebSite + SearchAction schema
-├── install.sh                    # One-command installer
-├── uninstall.sh                  # Uninstaller
-├── requirements.txt              # Python dependencies
-└── README.md                     # This file
+├── .codex/skills/        # Codex-compatible skill definitions
+├── AGENTS.md             # Root Codex instructions
+├── analyzer.py           # Core analyzer and scoring engine
+├── run.py                # CLI entrypoint
+├── agents/               # Specialist guidance docs
+├── scripts/              # Helpers for citability, llms.txt, fetching, reporting
+├── schema/               # JSON-LD templates
+├── install.sh            # Installer for ~/.codex/skills/geo/
+├── uninstall.sh          # Uninstaller
+└── requirements.txt      # Python dependencies
 ```
 
----
+## Installer behavior
 
-## How It Works
+The installer copies the full runnable toolkit into `~/.codex/skills/geo/`, including:
 
-### Full Audit Flow
+- `run.py`
+- `analyzer.py`
+- `AGENTS.md`
+- `agents/`
+- `scripts/`
+- `schema/`
+- `.codex/skills/geo/` and the specialized sub-skills
 
-When you run `/geo audit https://example.com`:
+## Optional advanced dependencies
 
-1. **Discovery** — Fetches homepage, detects business type, crawls sitemap
-2. **Parallel Analysis** — Launches 5 subagents simultaneously:
-   - AI Visibility (citability, crawlers, llms.txt, brand mentions)
-   - Platform Analysis (ChatGPT, Perplexity, Google AIO readiness)
-   - Technical SEO (Core Web Vitals, SSR, security, mobile)
-   - Content Quality (E-E-A-T, readability, freshness)
-   - Schema Markup (detection, validation, generation)
-3. **Synthesis** — Aggregates scores, generates composite GEO Score (0-100)
-4. **Report** — Outputs prioritized action plan with quick wins
+- `trafilatura` improves main-content extraction quality.
+- `spacy` improves entity extraction quality.
+- The analyzer falls back gracefully if those packages are unavailable in a restricted environment.
 
-### Scoring Methodology
+## Notes
 
-| Category | Weight |
-|----------|--------|
-| AI Citability & Visibility | 25% |
-| Brand Authority Signals | 20% |
-| Content Quality & E-E-A-T | 20% |
-| Technical Foundations | 15% |
-| Structured Data | 10% |
-| Platform Optimization | 10% |
-
----
-
-## Key Features
-
-### Citability Scoring
-Analyzes content blocks for AI citation readiness. Optimal AI-cited passages are 134-167 words, self-contained, fact-rich, and directly answer questions.
-
-### AI Crawler Analysis
-Checks robots.txt for 14+ AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) and provides specific allow/block recommendations.
-
-### Brand Mention Scanning
-Brand mentions correlate 3x more strongly with AI visibility than backlinks. Scans YouTube, Reddit, Wikipedia, LinkedIn, and 7+ other platforms.
-
-### Platform-Specific Optimization
-Only 11% of domains are cited by both ChatGPT and Google AI Overviews for the same query. Provides tailored recommendations per platform.
-
-### llms.txt Generation
-Generates the emerging llms.txt standard file that helps AI crawlers understand your site structure.
-
-### Client-Ready Reports
-Generates professional GEO reports in markdown or PDF format. PDF reports include score gauges, bar charts, platform readiness visualizations, color-coded tables, and prioritized action plans — ready to deliver to clients.
-
----
-
-## Use Cases
-
-- **GEO Agencies** — Run client audits and generate deliverables
-- **Marketing Teams** — Monitor and improve AI search visibility
-- **Content Creators** — Optimize content for AI citations
-- **Local Businesses** — Get found by AI assistants
-- **SaaS Companies** — Improve entity recognition across AI platforms
-- **E-commerce** — Optimize product pages for AI shopping recommendations
-
----
-
-## Uninstall
-
-```bash
-./uninstall.sh
-```
-
-Or manually:
-```bash
-rm -rf ~/.claude/skills/geo ~/.claude/skills/geo-* ~/.claude/agents/geo-*.md
-```
-
----
-
-## Want to Turn This Into a Business?
-
-The tool is free. Learning how to monetize it is where the community comes in.
-
-**[Join the AI Workshop Community →](https://skool.com/aiworkshop)**
-
-Inside you'll get:
-- **Video walkthroughs** — Step-by-step setup, running audits, reading results
-- **Client acquisition playbook** — How to find prospects, pitch GEO services, and close deals
-- **Live office hours** — Bring your audit results, get direct help
-- **GEO agency pricing & templates** — Proposal docs, cold outreach scripts, onboarding workflows
-
-GEO agencies charge $2K–$12K/month. This tool does the audit. The community teaches you how to sell it.
-
----
-
-## License
-
-MIT License
-
----
-
-## Contributing
-
-Contributions welcome!
-
----
-
-Built for the AI search era.
+- External network access may be limited in some environments; local fixture testing is supported.
+- The CLI prints rich tables and also emits a compact JSON summary for automation.

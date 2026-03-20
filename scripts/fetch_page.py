@@ -17,6 +17,9 @@ except ImportError:
     print("ERROR: Required packages not installed. Run: pip install -r requirements.txt")
     sys.exit(1)
 
+SESSION = requests.Session()
+SESSION.trust_env = False
+
 # Common AI crawler user agents for testing
 AI_CRAWLERS = {
     "GPTBot": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.2; +https://openai.com/gptbot)",
@@ -59,7 +62,7 @@ def fetch_page(url: str, timeout: int = 30) -> dict:
     }
 
     try:
-        response = requests.get(
+        response = SESSION.get(
             url,
             headers=DEFAULT_HEADERS,
             timeout=timeout,
@@ -211,7 +214,7 @@ def fetch_robots_txt(url: str, timeout: int = 15) -> dict:
     }
 
     try:
-        response = requests.get(robots_url, headers=DEFAULT_HEADERS, timeout=timeout)
+        response = SESSION.get(robots_url, headers=DEFAULT_HEADERS, timeout=timeout)
 
         if response.status_code == 200:
             result["exists"] = True
@@ -301,7 +304,7 @@ def fetch_llms_txt(url: str, timeout: int = 15) -> dict:
 
     for key, check_url in [("llms_txt", llms_url), ("llms_full_txt", llms_full_url)]:
         try:
-            response = requests.get(
+            response = SESSION.get(
                 check_url, headers=DEFAULT_HEADERS, timeout=timeout
             )
             if response.status_code == 200:
@@ -389,7 +392,7 @@ def crawl_sitemap(url: str, max_pages: int = 50, timeout: int = 15) -> list:
 
     for sitemap_url in sitemap_urls:
         try:
-            response = requests.get(
+            response = SESSION.get(
                 sitemap_url, headers=DEFAULT_HEADERS, timeout=timeout
             )
             if response.status_code == 200:
@@ -455,7 +458,7 @@ if __name__ == "__main__":
         pages = crawl_sitemap(target_url)
         data = {"pages": pages, "count": len(pages)}
     elif mode == "blocks":
-        response = requests.get(target_url, headers=DEFAULT_HEADERS, timeout=30)
+        response = SESSION.get(target_url, headers=DEFAULT_HEADERS, timeout=30)
         data = extract_content_blocks(response.text)
     elif mode == "full":
         data = {

@@ -2,7 +2,7 @@
 name: geo-report-pdf
 description: Generate a professional PDF report from GEO audit data using ReportLab. Creates a polished, client-ready PDF with score gauges, bar charts, platform readiness visualizations, color-coded tables, and prioritized action plans.
 version: 1.0.0
-author: geo-seo-claude
+author: geo-seo-codex
 tags: [geo, pdf, report, client-deliverable, professional]
 ---
 
@@ -15,14 +15,14 @@ This skill generates a professional, visually polished PDF report from GEO audit
 ## Prerequisites
 
 - **ReportLab** must be installed: `pip install reportlab`
-- The PDF generation script is located at: `~/.claude/skills/geo/scripts/generate_pdf_report.py`
-- Run a full GEO audit first (using `/geo-audit`) to have data to include in the report
+- The PDF generation script is located at: `~/.codex/skills/geo/scripts/generate_pdf_report.py`
+- Run a full GEO audit first (using a full GEO audit request) to have data to include in the report
 
 ## How to Generate a PDF Report
 
 ### Step 1: Collect Audit Data
 
-After running a full `/geo-audit`, collect all scores, findings, and recommendations into a JSON structure. The JSON data must follow this schema:
+After running a full GEO audit, collect all scores, findings, and recommendations into a JSON structure. The JSON data must follow this schema:
 
 ```json
 {
@@ -88,7 +88,7 @@ EOF
 Run the PDF generation script:
 
 ```bash
-python3 ~/.claude/skills/geo/scripts/generate_pdf_report.py /tmp/geo-audit-data.json GEO-REPORT-[brand].pdf
+python3 ~/.codex/skills/geo/scripts/generate_pdf_report.py /tmp/geo-audit-data.json GEO-REPORT-[brand].pdf
 ```
 
 The script will produce a professional PDF report with:
@@ -114,7 +114,7 @@ When the user runs this skill, follow this exact sequence:
    - `GEO-AUDIT-REPORT.md`
    - Or any `GEO-*.md` files from a recent audit
 
-2. **If no audit data exists** — Tell the user to run `/geo-audit <url>` first, then come back for the PDF.
+2. **If no audit data exists** — Tell the user to request a full GEO audit for the URL first, then come back for the PDF.
 
 3. **If audit data exists** — Parse the markdown report to extract:
    - Overall GEO score
@@ -131,14 +131,14 @@ When the user runs this skill, follow this exact sequence:
 
 6. **Run the PDF generator**:
    ```bash
-   python3 ~/.claude/skills/geo/scripts/generate_pdf_report.py /tmp/geo-audit-data.json "GEO-REPORT-[brand_name].pdf"
+   python3 ~/.codex/skills/geo/scripts/generate_pdf_report.py /tmp/geo-audit-data.json "GEO-REPORT-[brand_name].pdf"
    ```
 
 7. **Report success** — Tell the user the PDF was generated, its location, and file size.
 
 ## If the User Provides a URL
 
-If the user runs `/geo-report-pdf https://example.com` with a URL:
+If the user asks for a PDF GEO report for `https://example.com`:
 1. First run a full audit: invoke the `geo-audit` skill for that URL
 2. Then collect all the audit data from the generated report files
 3. Generate the PDF as described above
